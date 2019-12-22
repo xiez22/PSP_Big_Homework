@@ -7,6 +7,7 @@
 #include "nn/nn.h"
 
 #define SHOW_INFO
+#undef max
 
 void Data_Analyzer::process_data() {
 	//Clear the vector.
@@ -236,7 +237,7 @@ void Data_Analyzer::nerual_network() {
 	y_.calculate();
 
 	for (auto p : y_._data().data)
-		check_pred.emplace_back(max(p.front(), 0));
+		check_pred.emplace_back(std::max(p.front(), 0.0));
 }
 
 double Data_Analyzer::check_accuracy() {
