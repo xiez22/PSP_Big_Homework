@@ -1,0 +1,1 @@
+demo.cpp data_analyzer.cpp data_reader.cpp show_data.cpp ./fltk/Graph.cpp ./fltk/GUI.cpp ./fltk/Simple_window.cpp ./fltk/Window.cpp  ./nn/nn_functions.cpp ./nn/nn_grad.cpp ./nn/nn_matrix.cpp ./nn/nn_module.cpp ./nn/nn_tensor.cpp ./nn/nn_var.cpp
