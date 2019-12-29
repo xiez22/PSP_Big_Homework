@@ -26,6 +26,7 @@ void Show_Data::show_year_graph1() const {
 	Line_Chart chart(100, 500, 600, 400, 5, 6);
 	chart.set_range(0, data.processed_data.size(), 0, 10000);
 	chart.set_label({ u8"2011初",u8"2011中",u8"2012初",u8"2012中",u8"2013初" }, { "0","2000","4000","6000","8000","10000" });
+	chart.set_axis_name(u8"年份", u8"使用量(辆)");
 	vector<pair<double, double>> sdata;
 	for (size_t i = 0; i < data.processed_data.size(); ++i) {
 		sdata.emplace_back(make_pair(double(i), double(data.processed_data[i].total_cnt)));
@@ -55,6 +56,7 @@ void Show_Data::show_year_graph2() const {
 	Line_Chart chart(100, 500, 600, 400, 5, 6);
 	chart.set_range(0, data.processed_data.size(), 0, 10000);
 	chart.set_label({ u8"2011初",u8"2011中",u8"2012初",u8"2012中",u8"2013初" }, { "0","2000","4000","6000","8000","10000" });
+	chart.set_axis_name(u8"年份", u8"使用量(辆)");
 	vector<pair<double, double>> sdata1, sdata2, sdata3;
 	for (size_t i = 0; i < data.processed_data.size(); ++i) {
 		sdata1.emplace_back(make_pair(double(i), double(data.processed_data[i].total_cnt)));
@@ -192,6 +194,7 @@ void Show_Data::show_proportion_chart1() const {
 	chart.show_line_label = true;
 	chart.set_label({ u8"未注册用户",u8"已注册用户" });
 	chart.set_x_label({ u8"2011初",u8"2011中",u8"2012初",u8"2012中",u8"2013初" });
+	chart.set_axis_name(u8"时间");
 	
 	chart.add_data(0, { (double)data.processed_data[0].casual,
 		(double)data.processed_data[0].registered });
@@ -233,6 +236,7 @@ void Show_Data::show_proportion_chart2() const {
 	chart.show_line_label = true;
 	chart.set_label({ u8"星期日",u8"星期一",u8"星期二",u8"星期三",u8"星期四",u8"星期五",u8"星期六" });
 	chart.set_x_label({ u8"2011初",u8"2011中",u8"2012初",u8"2012中",u8"2013初" });
+	chart.set_axis_name(u8"时间");
 	
 	vector<double> adata;
 	for (int i = 1; i < data.processed_data.size(); ++i) {
@@ -268,6 +272,7 @@ void Show_Data::show_day_graph1() const {
 	Line_Chart chart(100, 500, 600, 400, 5, 6);
 	chart.set_range(0, 24, 0, 500);
 	chart.set_label({ "0","6","12","18","24" }, { "0","100","200","300","400","500" });
+	chart.set_axis_name(u8"时间（小时）", u8"使用量(辆)");
 	vector<pair<double,double>> casual(24), registered(24), total(24);
 	vector<int> cnt(24, 0);
 	for (int i = 0; i < 24; ++i) {
@@ -311,7 +316,10 @@ void Show_Data::show_bar_chart1() const {
 	win.attach(text);
 
 	//Draw the bar chart.
-	Bar_Chart chart(100, 150, 600, 400);
+	Bar_Chart chart(100, 500, 600, 400);
+	chart.set_axis_name(u8"天气状况", u8"平均使用量(辆)");
+	chart.set_label({ "0","2000","4000","6000" });
+	chart.set_range(0, 6000);
 	
 	vector<double> num(3, 0.0);
 	vector<int> cnt(3, 0);
@@ -345,7 +353,10 @@ void Show_Data::show_bar_chart2() const {
 	win.attach(text);
 
 	//Draw the bar chart.
-	Bar_Chart chart(250, 150, 300, 400);
+	Bar_Chart chart(100, 500, 600, 400);
+	chart.set_axis_name(u8"是否工作日", u8"平均使用量(辆)");
+	chart.set_range(0, 6000);
+	chart.set_label({ "0","2000","4000","6000" });
 
 	vector<double> num(2, 0.0);
 	vector<int> cnt(2, 0);
@@ -381,6 +392,7 @@ void Show_Data::show_temp_chart1() const {
 	Line_Chart chart(100, 500, 600, 400, 6, 6);
 	chart.set_range(0, 1, 0, 10000);
 	chart.set_label({ u8"0℃",u8"10℃",u8"20℃",u8"30℃",u8"40℃",u8"50℃" }, { "0","2000","4000","6000","8000","10000" });
+	chart.set_axis_name(u8"温度", u8"使用量(辆)");
 	vector<pair<double, double>> sdata;
 	for (size_t i = 0; i < data.processed_data.size(); ++i) {
 		sdata.emplace_back(make_pair(data.processed_data[i].temperature, double(data.processed_data[i].total_cnt)));
@@ -411,6 +423,7 @@ void Show_Data::show_hum_chart1() const {
 	Line_Chart chart(100, 500, 600, 400, 6, 6);
 	chart.set_range(0, 1, 0, 10000);
 	chart.set_label({ u8"0",u8"20",u8"40",u8"60",u8"80",u8"100" }, { "0","2000","4000","6000","8000","10000" });
+	chart.set_axis_name(u8"湿度", u8"使用量(辆)");
 	vector<pair<double, double>> sdata;
 	for (size_t i = 0; i < data.processed_data.size(); ++i) {
 		sdata.emplace_back(make_pair(data.processed_data[i].hum, double(data.processed_data[i].total_cnt)));

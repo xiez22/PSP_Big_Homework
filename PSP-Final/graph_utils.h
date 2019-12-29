@@ -94,6 +94,7 @@ protected:
 	vector<string> label_x, label_y;
 	vector<vector<pair<double, double>>> all_data;
 	vector<string> line_label_str;
+	string x_label_name = "", y_label_name = "";
 
 	int nx = 0, ny = 0;
 public:
@@ -104,6 +105,11 @@ public:
 		label_x = vector<string>(nx, "");
 		dy = ly / (ny - 0.5);
 		label_y = vector<string>(ny, "");
+	}
+
+	void set_axis_name(string x, string y) {
+		x_label_name = x;
+		y_label_name = y;
 	}
 
 	void set_range(double start_x, double end_x, double start_y, double end_y) {
@@ -126,6 +132,12 @@ public:
 		fl_color(0);
 		fl_line(cx, cy, cx, cy - ly);
 		fl_line(cx, cy, cx + lx, cy);
+
+		//Show axis name
+		Graph_lib::Text x_name(Point(cx + lx, cy + 20), x_label_name);
+		Graph_lib::Text y_name(Point(cx - 20, cy - ly - 15), y_label_name);
+		x_name.set_color(0), y_name.set_color(0);
+		x_name.draw(), y_name.draw();
 
 		for (int i = 1; i <= nx; ++i) {
 			fl_line(cx + dx * (i - 0.5), cy, cx + dx * (i - 0.5), cy - 5);
@@ -183,10 +195,25 @@ public:
 
 class Bar_Chart :public Graph_lib::Shape {
 	int cx = 0, cy = 0, lx = 0, ly = 0;
+	double sy = 0, ey = 0;
 	vector<pair<double, string>> vdata;
+	vector<string> y_label;
+	string x_axis_name = "", y_axis_name = "";
 public:
 	Bar_Chart(int cx, int cy, int lx, int ly) :
 		cx(cx), cy(cy), lx(lx), ly(ly) {}
+
+	void set_range(double start_y, double end_y) {
+		sy = start_y, ey = end_y;
+	}
+
+	void set_label(vector<string> label) {
+		y_label = label;
+	}
+
+	void set_axis_name(string x, string y) {
+		x_axis_name = x, y_axis_name = y;
+	}
 
 	void add_data(double val, const string& label) {
 		vdata.emplace_back(make_pair(val, label));
@@ -195,17 +222,48 @@ public:
 	void draw_lines() const {
 		
 		vector<int> fill_color({ (int)0xcc333300,(int)0x33cc6600,(int)0x3399cc00,(int)0xff990000,(int)0xff66cc00,(int)0xcccc6600,(int)0x9966ff00 });
-		Fl_Chart chart(cx, cy, lx, ly);
-		chart.type(FL_BAR_CHART);
-		chart.textsize(20);
-		chart.color(0xffffff00);
+
+		fl_color(0);
+		fl_line(cx, cy, cx + lx, cy);
+		fl_line(cx, cy, cx, cy - ly);
+		//Show axis name
+		Graph_lib::Text x_name(Point(cx + lx, cy + 30), x_axis_name);
+		Graph_lib::Text y_name(Point(cx - 30, cy - ly - 25), y_axis_name);
+		x_name.set_color(0), y_name.set_color(0);
+		x_name.set_font_size(18);
+		y_name.set_font_size(18);
+		x_name.draw(), y_name.draw();
 		
-		for (size_t i = 0; i < vdata.size(); ++i)
-			chart.add(vdata[i].first, vdata[i].second.c_str(), fill_color[i % fill_color.size()]);
-		((Fl_Widget*)(&chart))->draw();
-		//Remove the ugly border.
-		fl_color(0xffffff00);
-		fl_rect(cx, cy, lx, ly);
+		int dx = lx / (vdata.size() + 1);
+
+		for (int i = 0; i < vdata.size(); ++i) {
+			Graph_lib::Text label_text(Point(cx + dx * (i + 1) - 20, cy + 20), vdata[i].second);
+			label_text.set_color(0);
+			label_text.set_font_size(18);
+			label_text.draw();
+
+			Graph_lib::Rectangle rect(Point(cx + dx * (i + 1) - 30,
+				cy - (vdata[i].first - sy) / (ey - sy) * ly),
+				Point(cx + dx * (i + 1) + 30, cy));
+			rect.set_color(Graph_lib::Color::invisible);
+			rect.set_fill_color(fill_color[i % fill_color.size()]);
+			rect.draw();
+
+			Graph_lib::Text num_text(Point(cx + dx * (i + 1) - 20,
+				cy - (vdata[i].first - sy) / (ey - sy) * ly - 15), to_string(int(vdata[i].first)));
+			num_text.set_color(fill_color[i % fill_color.size()]);
+			num_text.set_font_size(18);
+			num_text.draw();
+		}
+
+		for (int i = 0; i < y_label.size(); ++i) {
+			int dy = ly / (y_label.size() - 1);
+			Graph_lib::Text val_text(Point(cx - 40, cy - i * dy + 5), y_label[i]);
+			val_text.set_color(0);
+			val_text.draw();
+			fl_color(0);
+			fl_line(cx, cy - i * dy, cx + 10, cy - i * dy);
+		}
 	}
 };
 
@@ -218,13 +276,18 @@ public:
 	map<double, vector<double>> all_data;
 	vector<string> line_label_str;
 	int nx = 0, ny = 5, n = 0;
-public:
+	string axis_name = "";
+ public:
 	bool show_label = false, show_line_label = false;
 	Proportion_Chart(double cx, double cy, double lx, double ly, int nx, int n) :
 		cx(cx), cy(cy), lx(lx), ly(ly), nx(nx), n(n) {
 		dx = lx / (nx - 1);
 		label_x = vector<string>(nx, "");
 		dy = ly / 4;
+	}
+
+	void set_axis_name(string name) {
+		axis_name = name;
 	}
 
 	void set_range(double start_x, double end_x) {
@@ -292,6 +355,10 @@ public:
 			fl_color(0);
 			fl_line(cx, cy, cx, cy - ly);
 			fl_line(cx, cy, cx + lx, cy);
+
+			Graph_lib::Text axis_text(Point(cx + lx + 15, cy - 10), axis_name);
+			axis_text.set_color(0);
+			axis_text.draw();
 
 			for (int i = 0; i < nx; ++i) {
 				fl_line(cx + dx * i, cy, cx + dx * i, cy - 5);

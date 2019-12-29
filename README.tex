@@ -233,7 +233,7 @@ $$\mbox{误差率}=\min(\frac{|\mbox{当日预测用车次数}-\mbox{当日实�
 \end{itemize}
 \subsection{运行步骤}
 \begin{enumerate}
-    \item 使用Visual Studio 2019（推荐）打开根目录下的PSP-Final.sln文件，选择x86，Release模式，点击生成解决方案即可编译。如果使用其它编译工具，可以自行编译PSP\_Final文件夹下：demo.cpp、data\_analyzer.cpp、data\_reader.cpp、show\_data.cpp、./fltk/Graph.cpp、./fltk/GUI.cpp、./fltk/Simple\_window.cpp、./fltk/Window.cpp、./nn/nn\_functions.cpp、./nn/nn\_grad.cpp、./nn/nn\_matrix.cpp、./nn/nn\_module.cpp、./nn/nn\_tensor.cpp、./nn/nn\_var.cpp，设定-std=c++14，并链接FLTK库。
+    \item 使用Visual Studio 2019（推荐）打开根目录下的PSP-Final.sln文件，选择x86，Release模式，点击生成解决方案即可编译。如果使用其它编译工具，可以自行编译：demo.cpp、data\_analyzer.cpp、data\_reader.cpp、show\_data.cpp、./fltk/Graph.cpp、./fltk/GUI.cpp、./fltk/Simple\_window.cpp、./fltk/Window.cpp、./nn/nn\_functions.cpp、./nn/nn\_grad.cpp、./nn/nn\_matrix.cpp、./nn/nn\_module.cpp、./nn/nn\_tensor.cpp、./nn/nn\_var.cpp，设定-std=c++14，并链接FLTK库。
     \item 数据读入和脏数据处理：编译并运行程序后，即自动读入全部数据，并且立即自动完成脏数据的处理。
     \item 可视化：按照提示，输入1，按下回车，根据提示选择需要查看的可视化图像。查看完成后，点击窗口右上角的Button，即可返回选择界面。
     \item 数据预测：按照提示，输入2，按下回车，根据提示选择需要预测的数据内容。等待一段时间后会自动弹出预测的误差率结果。
